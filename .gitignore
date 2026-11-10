@@ -1,0 +1,32 @@
+# 本地环境与密钥（示例模板可入库，其余一律排除）
+.env
+.env.*
+!.env.example
+
+# 日志与临时文件
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# 数据导出与备份（本仓不应出现任何数据库内容）
+*.sql
+*.sql.gz
+*.dump
+backup/
+
+# 依赖与构建产物
+node_modules/
+dist/
+dist-ci/
+target/
+*.class
+*.jar
+
+# 编辑器与系统文件
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.code-workspace
