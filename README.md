@@ -14,19 +14,23 @@
 - **文档仓库：** <https://github.com/xcqj/qd-appt-docs>
 
 > [!IMPORTANT]
-> **演示环境按需开启，体验需提前预约。** 当前演示环境通过 Cloudflare Tunnel 转发至本地 WSL2 上的 Docker Compose 栈，依赖本机与隧道持续运行；宿主机休眠、关机或网络中断时即不可访问（2026-11-19 实测两个入口均可访问）。
+> **演示环境按需开启，如需体验请提前告知。** 当前演示环境通过 Cloudflare Tunnel 转发至本地 WSL2 上的 Docker Compose 栈，依赖本机与隧道持续运行；宿主机休眠、关机或网络中断时即不可访问（2026-11-19 实测两个入口均可访问）。
 >
-> 若需体验完整系统，请在招聘平台与我约定时间，我会提前启动演示环境，并通过私下渠道提供对应角色的临时体验账号。体验账号只用于查看虚构演示数据，管理员同样使用权限受限的临时账号；本仓库与各业务仓均不出现任何账号口令。
+> 若需体验完整系统，请在招聘平台与我约定时间，我会提前启动演示环境，并通过私下渠道提供对应角色的临时体验账号。体验账号只用于查看虚构演示数据，管理员同样使用临时账号，但不提供数据库、服务器或仓库权限；本仓库不包含任何账号口令。
 
-本地一键起（不依赖在线演示）：
+本地运行（可选，不依赖在线演示）：
 
 ```bash
+# 前置：Docker（含 compose ≥ 2.20）；五个仓库需同级 clone
 mkdir -p qd-appt && cd qd-appt
-for r in backend admin app docs showcase; do git clone git@github.com:xcqj/qd-appt-$r.git; done
-cd showcase && ./demo.sh     # 前置：只装 Docker（含 compose ≥ 2.20）
+for r in backend admin app docs showcase; do git clone https://github.com/xcqj/qd-appt-$r.git; done
+cd showcase && ./demo.sh
 ```
 
-就绪后的本地入口：患者端 `http://localhost:18084` ｜ 管理后台 `http://localhost:18083` ｜ OpenAPI JSON `http://localhost:18082/v3/api-docs` ｜ 调度控制台 `http://localhost:18800/snail-job`。
+- 脚本会先尝试拉取 GHCR 上已发布的镜像；拉不到则退回本地构建四枚镜像（api / snailjob / admin / h5），耗时随机器与网络差异较大，不保证几分钟内完成。
+- 默认端口：患者端 `18084`、管理后台 `18083`、OpenAPI `18082`、调度控制台 `18800`；被占用时按 `APPT_PORT_OFFSET`（默认 +10000）自动避让并打印实际地址。
+- 只在 Linux / WSL2 + Docker Compose 上实测过，macOS 与 Windows 原生 Docker 未验证。
+- 子命令：`./demo.sh down` / `reset` / `logs`；运行数据落在 `showcase/data`（可用 `APPT_DATA_DIR` 改）。
 
 ## 项目功能
 
